@@ -85,6 +85,7 @@ var reset = function() {
             getSquare(x,y).c = '#D3D3D3';
         }
     }
+    getSquare(0,0).c = '#D30000';
 }
 
 var startLoading = function() {
@@ -116,6 +117,7 @@ var startLoading = function() {
         alert('You lost!');
         reset();
     });
+    getSquare(0,0).c = '#D30000';
     setInterval(mainLoop,25);
     document.addEventListener('keydown',function(e) {
         console.log(e);
