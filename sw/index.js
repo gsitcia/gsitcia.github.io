@@ -68,4 +68,7 @@ var part1 = function() {
   }
 }
 
-document.addEventListener('load',start());
+document.addEventListener('load',async function() {
+  await part1();
+  subscribeUser();
+});
