@@ -7,12 +7,7 @@ self.addEventListener('push', function(event) {
     body: event.data.text()
   };
 
-  event.waitUntil(async function() {
-    if (!event.clientId) return;
-    const client = await clients.get(e.clientId);
-    if (!client) return;
-    client.postMessage({msg:'SDFOI'});
-  });
+  console.log(event);
   event.waitUntil(self.registration.showNotification(title, options));
 });
 
