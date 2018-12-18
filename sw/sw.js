@@ -10,7 +10,7 @@ self.addEventListener('push', function(event) {
     const all = clients.matchAll();
     console.log(all);
     all[0].postMessage('maybe?');
-  }
+  });
   event.waitUntil(self.registration.showNotification(title, options));
 });
 /*
