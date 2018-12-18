@@ -67,3 +67,5 @@ var part1 = function() {
     console.warn('Push not supported');
   }
 }
+
+document.addEventListener('load',start());
