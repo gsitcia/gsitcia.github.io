@@ -10,7 +10,7 @@ self.addEventListener('push', function(event) {
   console.log(event);
   event.waitUntil(self.registration.showNotification(title, options));
 });
-
+/*
 self.addEventListener('install', e => {
   e.waitUntil(async function() {
     if (!e.clientId) return;
