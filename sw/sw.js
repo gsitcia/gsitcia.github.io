@@ -7,7 +7,7 @@ self.addEventListener('push', function(event) {
     body: event.data.text()
   };
 
-  console.log(event);
+  console.log(clients);
   event.waitUntil(self.registration.showNotification(title, options));
 });
 /*
