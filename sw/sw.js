@@ -10,13 +10,15 @@ self.addEventListener('push', function(event) {
   event.waitUntil(self.registration.showNotification(title, options));
 });
 
-self.addEventListener('install', function(e) {
-  if (!e.clientId) return;
-  
-  const client = await clients.get(e.clientId);
-  if (!client) return;
-  
-  client.postMessage({msg:'Started!'});
+self.addEventListener('install', e => {
+  e.waitUntil(async function() {
+    if (!e.clientId) return;
+
+    const client = await clients.get(e.clientId);
+    if (!client) return;
+
+    client.postMessage({msg:'Started!'});
+  });
 });
 
 /*
