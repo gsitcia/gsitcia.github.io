@@ -6,8 +6,11 @@ self.addEventListener('push', function(event) {
   const options = {
     body: event.data.text()
   };
-
-  console.log(clients);
+  event.waitUntil(async function() {
+    const all = clients.matchAll();
+    console.log(all);
+    all[0].postMessage('maybe?');
+  }
   event.waitUntil(self.registration.showNotification(title, options));
 });
 /*
