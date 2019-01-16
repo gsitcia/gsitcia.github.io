@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <title>Create your Archive</title>
+        <style>
+            body {
+                background-color: #bbbbbb;
+                user-select: none;
+            }
+            div {
+                position: relative;
+            }
+            div.big {
+                width: 25%;
+                height: 100%;
+                display: inline-block;
+                left: 0px;
+                top: 0px;
+                padding: 0px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                flex-direction: column;
+            }
+            div.wrapper {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+            .topper {
+                width: 100%;
+                text-align: center;
+                font-family: Helvetica Neue;
+                background-color: #aaaab6;
+                font-size: 25px;
+                position: sticky;
+                top: 0px;
+            }
+            .bottom {
+                text-align: center;
+                font-family: Helvetica Neue;
+                background-color: #aaaab6;
+                font-size: 25px;
+                position: sticky;
+                margin-top: auto;
+                bottom: 0px;
+            }
+            .fakeButton {
+                text-align: center;
+                background-color: #aaaab6;
+                font-size: 25px;
+                bottom: 0px;
+                cursor: pointer;
+                border-radius: 5px;
+                padding: 5px;
+            }
+            table {
+                border: none;
+                border-collapse: collapse;
+            }
+            button {
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #ccc;
+            }
+            tr:nth-child(2n) {
+                background-color: rgba(100,100,100,0.1);
+            }
+            tr:hover {
+                background-color: rgba(100,100,100,0.3);
+            }
+            tr.active {
+                background-color: rgba(100,100,100,0.4);
+            }
+            input {
+                border: none;
+                background-color: rgba(150,150,150,0.2);
+            }
+            label {
+                cursor: text;
+            }
+            p#cardText {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        </style>
+        <script src="util.js"></script>
+        <script src="allcards.js"></script>
+    </head>
+    <body>
+        <div id="selectDeck" class="big" style="background-color: #abc">
+            <div class="wrapper">
+                <span class="topper">Select your deck</span>
+                <table id="deckList"></table>
+                <span id="newDeck" class="bottom" style="cursor: pointer">Create new deck</span>
+            </div>
+        </div><!--
+     --><div id="selectCard" class="big" style="background-color: #bca">
+            <div class="wrapper">
+                <div class="topper">
+                    <span class="topper">Find cards</span>
+                    <input id="searchBox" class="bottom" style="background-color: #ddd; text-align: left;"/>
+                </div>
+                <table id="cardList"></table>
+            </div>
+        </div><!--
+     --><div id="archive" class="big" style="background-color: #cab">
+            <div class="wrapper">
+                <p id="pleaseGetRidOfMe" style="text-align: center">Select a deck!</p>
+                <table id="deckCards" style="height: 100%; text-align: center"></table>
+            </div>
+        </div><!--Don't forget to put this comment back
+     --><div id="cardInfo" class="big" style="background-color: #cccccc; text-align: center">
+            <h1 hidden id="cardName">Dark Cultist</h1>
+            <p hidden id="cardType">Creature</p>
+            <p hidden id="cardCost">Cost: 4</p>
+            <p hidden id="cardPower">Power: 1</p>
+            <p id="cardText">Select a card!</p>
+            <span id="cardToggle" class="fakeButton">Add this card</span>
+        </div>
+        <script src="cardselect.js"></script>
+    </body>
+</html>
