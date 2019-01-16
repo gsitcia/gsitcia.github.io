@@ -82,7 +82,7 @@ var dealwithit = function(d) {
 
 startGame.addEventListener('click',function() {
     startGame.disabled = true;
-    conn.send({type:'start',place:'connectest.html'});
+    conn.send({type:'start',place:'cardselect.html'});
     if (started) {
         redirect(started);
     } else {
