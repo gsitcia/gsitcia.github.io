@@ -26,6 +26,10 @@ var setupc = function(c) { // sets up recieving events and starting the game
             e[i] = d[i];
         }
         document.dispatchEvent(e);
+        if (!d.halt) {
+            d.halt = true;
+            conn.send(d);
+        }
     });
 }
 
