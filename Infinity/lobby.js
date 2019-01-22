@@ -4,6 +4,7 @@ playerName.value = names.us;
 var connected = false;
 var peer,conn;
 var started = false;
+const DESTINATION = 'cardselect.html';
 //clearallcookies(); rather than doing this, just get rid of id and connect and connected
 //clearcookie('id');
 //clearcookie('connect');
@@ -82,7 +83,7 @@ var dealwithit = function(d) {
 
 startGame.addEventListener('click',function() {
     startGame.disabled = true;
-    conn.send({type:'start',place:'cardselect.html'});
+    conn.send({type:'start',place:DESTINATION});
     if (started) {
         redirect(started);
     } else {
