@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <script src="notes.js"></script>
+        <script src="inc.js"></script>
+    </head>
+    <body>
+        <input id="nnn" value="5"/>
+        <button id="togg">Start</button>
+        <span id="info"></span>
+        <script>
+            //var nnn = undefined;
+            togg.addEventListener('click',function() {
+                var num = nnn.value*1;
+                for (var i = 0; i < num; i++) {
+                    new Individual(randType());
+                }
+                togg.hidden = true;
+                nnn.hidden = true;
+                document.addEventListener('av',()=>info.innerText=avCell()+'/'+cells.length);
+                for (var i = 1; i < num; i++) {
+                    (function (j) {setTimeout(()=>players[j].play(),Math.floor(Math.random()*100)*eighth*1000)})(i);
+                }
+                players[0].play();
+                document.dispatchEvent(new Event('av'));
+                //setInterval(()=>{var n = getNote('C5','sine');n.start(0);n.stop(0.09);},eighth*1000);
+                /*
+                if (!nnn) {
+                    nnn=setInterval(()=>{
+                        var n = getNote('C5','sine');
+                        n.start(0);
+                        n.stop(0.09);
+                    },eighth*1000);
+                    togg.innerText='Stop';
+                } else {
+                    clearInterval(nnn);
+                    nnn = undefined;
+                    togg.innerText='Start';
+                }*/
+            });
+        </script>
+    </body>
+</html>
