@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <style>
+            span {
+                font-family: arial;
+            }
+            button {
+                border: none;
+                padding: 5px 5px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #ccc;
+            }
+            ul {
+                right: 0px;
+                padding-bottom: 0px;
+            }
+            li {
+                width: 100%;
+                padding-bottom: 5px;
+            }
+            li span {
+                display: block;
+                overflow: hidden;
+            }
+            li button {
+                margin-right: 4px;
+                float: right;
+                padding-right: 5px;
+                padding-top: 3px;
+                padding-bottom: 3px;
+            }
+            li input {
+                margin-right: 4px;
+                font-family: monospace;
+                width: 100%;
+            }
+            div {
+                clear: right;
+            }
+        </style>
+    </head>
+    <body>
+        <ul id="list">
+        </ul><!--
+     --><button id="new_arp">Make a new arp</button>
+        <button id="new_drone">Make a new drone</button>
+        <button id="stop_all">Stop everything</button>
+        <button id="start_everything">Start everything</button>
+        <script src="arp.js"></script>
+        <br><br>
+        <img src="piano-keyboard-diagram.jpg"><br>
+        <span id="how_to_drone" style="font-family: arial"></span>
+    </body>
+</html>
