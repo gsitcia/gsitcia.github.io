@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nspire thing</title>
+  <script src="nspire.js"></script>
+</head>
+<body>
+  Open the console to see a lot of junk!
+  <input id="initialize" type="button" value="Initialize">
+  <ul id="dirlist" hidden>
+  </ul>
+  <button hidden id="sendFileButton">Send file to this directory</button>
+  <input hidden type="file" id="fileInput">
+  <input hidden id="webInput" placeholder="Enter a website url">
+  <br>
+  <button hidden id="makeDirButton">Add directory here</button>
+  <input hidden id="dirNameInput" placeholder="Enter Name">
+  <br>
+  <button hidden id="resetDirsButton">Reset listing</button>
+  <script>
+    initialize.addEventListener('click',function(){
+      init().then(startup);
+    });
+    var pwd = '/';
+    var startup = function() {
+      initialize.hidden = true;
+      setCallback({ack:0}).then(fixdirs);
+      dirlist.hidden = false;
+      sendFileButton.hidden = false;
+      makeDirButton.hidden = false;
+      resetDirsButton.hidden = false;
+    };
+    var makeItem = function(d) {
+      var li = document.createElement('li');
+      if (d.directory) {
+        var a = document.createElement('a');
+        a.href='#';
+        a.innerText = d.name;
+        li.appendChild(a);
+        var t = d.name+'/';
+        a.addEventListener('click',function() {
+          pwd += t;
+          fixdirs();
+        })
+      } else {
+        li.innerText = d.name;
+      }
+      return li;
+    };
+    var makeBack = function() {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href='#';
+      a.innerText='..';
+      a.addEventListener('click',function() {
+        pwd = pwd.slice(0,-1).split('/').slice(0,-1).join('/')+'/';
+        fixdirs();
+      });
+      li.appendChild(a);
+      return li;
+    }
+    var fixdirs = function() {
+      dirlist.innerHTML='';
+      dirlist.appendChild(makeBack());
+      ls(pwd).then(dirs=>{
+        for (var i = 0; i < dirs.length; i++) {
+          dirlist.appendChild(makeItem(dirs[i]));
+        }
+      });
+    };
+    sendFileButton.addEventListener('click',function() {
+      sendFileButton.hidden=true;
+      fileInput.hidden=false;
+      webInput.hidden=false;
+    });
+    makeDirButton.addEventListener('click',function() {
+      makeDirButton.hidden=true;
+      dirNameInput.hidden=false;
+      dirNameInput.focus();
+    });
+    dirNameInput.addEventListener('keydown',function(e) {
+      if (e.keyCode==13) {
+        createDirectory(pwd+dirNameInput.value).then(fixdirs);
+        dirNameInput.hidden=true;
+        makeDirButton.hidden=false;
+        dirNameInput.value='';
+      }
+    });
+    resetDirsButton.addEventListener('click',fixdirs);
+    var fixdirbutton = function() {
+      fileInput.hidden=true;
+      fileInput.value='';
+      webInput.hidden=true;
+      webInput.value='';
+      sendFileButton.hidden=false;
+      fixdirs();
+    }
+    fileInput.addEventListener('change',function() {
+      var a = new FileReader;
+      a.addEventListener('load',function() {
+        var n = pwd+fileInput.files[0].name;
+        if (n.slice(-4)!='.tns') {
+          n += '.tns';// you're welcome
+        }
+        sendFile(pwd+fileInput.files[0].name,a.result).then(fixdirbutton).catch((e)=>{alert(e);fixdirbutton()});
+      });
+      a.readAsArrayBuffer(fileInput.files[0]);
+    });
+    webInput.addEventListener('keydown',function(e) {
+      if (e.keyCode==13) {
+        var n = pwd+webInput.value.split('/').pop();
+        if (n.slice(-4)!='.tns') {
+          n += '.tns';// you're welcome
+        }
+        fetch('https://cors-anywhere.herokuapp.com/'+webInput.value).then(r=>r.arrayBuffer()).then(b=>{
+          sendFile(n,b).then(fixdirbutton).catch(e=>{alert(e);fixdirbutton()});
+        });
+        webInput.value='Please wait';
+      }
+    });
+  </script>
+</body>
+</html>
