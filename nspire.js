@@ -241,43 +241,64 @@ var decodeScreenShot = function(b) {
   var index = 0;
   l = new DataView(new ArrayBuffer(320*240*2)); /* where we'll put the screenshot */
   while (i < b.byteLength) {
-    a = b.getInt8(i);
+    var a = b.getInt8(i);
     if (a >= 0) {
       a = a+1;
-      var v = b.getUint8(i+1);
+      var v = b.getUint32(i+1);
       var t = index;
-      for (;index<t+a;index++) {
-        l.setUint8(index,v);
+      for (;index<t+a*4;index+=4) {
+        l.setUint32(index,v);
       }
-      i += 2;
+      i += 5;
     } else {
-      a = -(a-1);
-      for (var j = 0; j < a; j++) {
-        try {
-          var v = b.getUint8(i+1+j);
-        } catch {
-          var v = 0;
-        }
-        l.setUint8(index+j,v);
+      a = 1-a;
+      for (var j = 0; j < a*4; j+=4) {
+        var v = b.getUint32(i+1+j);
+        l.setUint32(index+j,v);
       }
-      index += a;
-      i += a+1;
+      index += a*4;
+      i += a*4+1;
     }
   }
-  return a565torgba(new Uint16Array(l.buffer));
+  console.log(index);
+  return a565torgba(l.buffer);
 };
 
 var a565torgba = function(b) {
-  var l = new Uint8Array(320*240*4);
-  for (var i = 0; i < 320*240; i++) {
+  b = new Uint16Array(b);/* just in case */
+  var l = new Uint8Array(b.byteLength*2);
+  for (var i = 0; i < b.byteLength/2; i++) {
     var v = b[i];
     l[i*4+0]=v>>11<<3;
-    l[i*4+1]=v>>5&0b111111<<2;
-    l[i*4+2]=v&0b11111<<3;
+    l[i*4+1]=(v>>5&0b111111)<<2;
+    l[i*4+2]=(v&0b11111)<<3;
     l[i*4+3]=0xff;
   }
   return l;
 };
+
+var showOnCanvas = async function(rgba,canvas) {
+  var ctx = canvas.getContext('2d');
+  var q = ctx.createImageData(320,240);
+  q.data.set(rgba);
+  ctx.putImageData(q,0,0);
+};
+
+var getScreenBlob = async function(rgba) {
+  var canvas = document.createElement('canvas');
+  canvas.width=320;
+  canvas.height=240;
+  showOnCanvas(rgba,canvas);
+  var b = await new Promise(r=>canvas.toBlob(r));
+  return b;
+};
+
+var download = function(link,name) {
+  var a = document.createElement('a');
+  a.download=name;
+  a.href=link;
+  a.click();
+}
 
 var sendFile = async function(fn,data) {
   data = createData([data]);

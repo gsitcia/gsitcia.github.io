@@ -4,20 +4,27 @@
   <meta charset="UTF-8">
   <title>Nspire thing</title>
   <script src="nspire.js"></script>
+  <style>
+    * {
+      margin: 5px;
+    }
+  </style>
 </head>
-<body>
-  Open the console to see a lot of junk!
-  <input id="initialize" type="button" value="Initialize">
-  <ul id="dirlist" hidden>
-  </ul>
-  <button hidden id="sendFileButton">Send file to this directory</button>
-  <input hidden type="file" id="fileInput">
-  <input hidden id="webInput" placeholder="Enter a website url">
-  <br>
-  <button hidden id="makeDirButton">Add directory here</button>
-  <input hidden id="dirNameInput" placeholder="Enter Name">
-  <br>
-  <button hidden id="resetDirsButton">Reset listing</button>
+<body style="margin:0px">
+  <span style="">Open the console to see a lot of junk!</span>
+    <input id="initialize" type="button" value="Initialize" style="">
+    <canvas id="canvas" width="320" height="240" style="position:absolute;right:5px;top:5px"></canvas>
+    <ul id="dirlist" hidden></ul>
+    <button hidden id="sendFileButton">Send file to this directory</button>
+    <input hidden type="file" id="fileInput">
+    <input hidden id="webInput" placeholder="Enter a website url">
+    <br>
+    <button hidden id="makeDirButton">Add directory here</button>
+    <input hidden id="dirNameInput" placeholder="Enter Name">
+    <br>
+    <button hidden id="screenshotButton">Take a screenshot</button>
+    <br>
+    <button hidden id="resetDirsButton">Reset listing</button>
   <script>
     initialize.addEventListener('click',function(){
       init().then(startup);
@@ -25,11 +32,12 @@
     var pwd = '/';
     var startup = function() {
       initialize.hidden = true;
-      setCallback({ack:0}).then(fixdirs);
+      setCallback({ack:0}).then(fixdirs).then(()=>setCallback({ack:10})).then(takeScreenCap);//.then(takeScreenCap);
       dirlist.hidden = false;
       sendFileButton.hidden = false;
       makeDirButton.hidden = false;
       resetDirsButton.hidden = false;
+      screenshotButton.hidden = false;
     };
     var makeItem = function(d) {
       var li = document.createElement('li');
@@ -63,7 +71,7 @@
     var fixdirs = function() {
       dirlist.innerHTML='';
       dirlist.appendChild(makeBack());
-      ls(pwd).then(dirs=>{
+      return ls(pwd).then(dirs=>{
         for (var i = 0; i < dirs.length; i++) {
           dirlist.appendChild(makeItem(dirs[i]));
         }
@@ -119,6 +127,12 @@
         webInput.value='Please wait';
       }
     });
+    var takeScreenCap = function() {
+      var a = console.log;
+      console.log=function(){};/* too slow */
+      getScreenShot().then(decodeScreenShot).then(r=>showOnCanvas(r,canvas)).then(()=>console.log=a);
+    };
+    screenshotButton.addEventListener('click',takeScreenCap);
   </script>
 </body>
 </html>
